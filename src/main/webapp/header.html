@@ -1,0 +1,116 @@
+<!--<script src="js/jquery-3.3.1.js"></script>-->
+<!--<script src="js/jquery-1.11.0.min.js"></script>-->
+<script src="js/getParameter.js"></script>
+<script>
+    $(function () {
+        var rname = decodeURI(getParameter("rname"));
+        var cid = "";
+        var currentPage = "";
+        var rows = "";
+
+        //获取用户名
+        $.get(
+            "GetUserName",
+            function (data) {
+                $("#sp").html("欢迎回来" + data.data)
+            },
+            "json"
+        )
+        //登录退出功能
+        $("#logOut").click(function () {
+            $.get(
+                "LogOut",
+                function (data) {
+                    $("#sp").html("欢迎回来" + data.data)
+                }
+            )
+        })
+
+        $.get(
+            "GetCategory",
+            function (data) {
+                // console.log(data)
+                var categoryList = data;
+                var lis = '<li class="nav-active"><a href="index.html">首页</a></li>';
+                //    遍历列表集合
+                for (var i = 0; i < categoryList.length; i++) {
+                    //    获得当前的json对象
+                    var ele = categoryList[i];
+                    lis += '<li><a href="route_list.html?cid=' + ele.cid + '&currentPage=' + 1 + '&rows=' + 4 + '&rname='+rname+'">' + ele.cname + '</a></li>';
+                }
+                //    选中列表标签  进行数据填充
+                $("#cidUl").html(lis);
+            },
+            "json"
+        )
+        //    给搜索链接绑定一个方法
+        $("#searchRoute").click(function () {
+            // 1.获得输入框的内容
+            var rname = $("#searchInput").val();
+            //    2.页面跳转  跳转  route_list.html
+            location.href = "route_list.html?&rname="+rname+"&currentPage="+currentPage+"&cid="+cid+"&rows="+rows;
+        })
+
+
+    })
+
+</script>
+<!-- 头部 start -->
+<header id="header">
+    <div class="top_banner">
+        <img src="images/top_banner.jpg" alt="">
+    </div>
+    <div class="shortcut">
+        <!-- 未登录状态  -->
+        <div class="login_out">
+            <a href="login.html">登录</a>
+            <a href="register.html">注册</a>
+        </div>
+        <!-- 登录状态  -->
+        <div class="login">
+
+            <span id="sp">欢迎回来，admin</span>
+            <a href="myfavorite.html" class="collection">我的收藏</a>
+            <a href="javascript:;" id="logOut">退出</a>
+        </div>
+    </div>
+    <div class="header_wrap">
+        <div class="topbar">
+            <div class="logo">
+                <a href="login.html"><img src="images/logo.jpg" alt=""></a>
+            </div>
+            <div class="search">
+                <input name="" id="searchInput" type="text" placeholder="请输入路线名称" class="search_input"
+                       autocomplete="off">
+                <a class="search-button" id="searchRoute">搜索</a>
+                <!--href="javascript:searchRoute()"-->
+            </div>
+            <div class="hottel">
+                <div class="hot_pic">
+                    <img src="images/hot_tel.jpg" alt="">
+                </div>
+                <div class="hot_tel">
+                    <p class="hot_time">客服热线(9:00-6:00)</p>
+                    <p class="hot_num">400-618-9090</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- 头部 end -->
+<!-- 首页导航 -->
+<div class="navitem">
+    <ul class="nav" id="cidUl">
+        <!--<li class="nav-active"><a href="index.html">首页</a></li>-->
+        <!--<li><a href="route_list.html">门票</a></li>-->
+        <!--<li><a href="route_list.html">酒店</a></li>-->
+        <!--<li><a href="route_list.html">香港车票</a></li>-->
+        <!--<li><a href="route_list.html">出境游</a></li>-->
+        <!--<li><a href="route_list.html">国内游</a></li>-->
+        <!--<li><a href="route_list.html">港澳游</a></li>-->
+        <!--<li><a href="route_list.html">抱团定制</a></li>-->
+        <!--<li><a href="route_list.html">全球自由行</a></li>-->
+        <!--<li><a href="favoriterank.html">收藏排行榜</a></li>-->
+    </ul>
+</div>
+    
